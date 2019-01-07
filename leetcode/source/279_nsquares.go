@@ -1,15 +1,23 @@
-package leetcode
+package source
 
-import "math"
+import (
+	"fmt"
+	"math"
+)
 
-func numSquares(n int) int {
-	c := make([]int, n+1)
+func NumSquares(n int) int {
+	c := make([]int, n+1) // 定义状态数组
+	c[0] = 0
 	c[1] = 1
-
+	/*
+	状态转移方程:
+	c[i] = max(c[i-j*j] + 1), j = 1 ... Sqrt(i)
+	 */
 	for i := 2; i <= n; i++ {
 		min := math.MaxInt16
-		for j := 1; j < upLimit(i); j++ {
-			if x := i - j*j; x > 0 {
+		upl := upLimit(i)
+		for j := 1; j <= upl; j++ {
+			if x := i - j*j; x >= 0 {
 				if min > c[x] + 1 {
 					min = c[x] + 1
 				}
@@ -17,6 +25,7 @@ func numSquares(n int) int {
 		}
 		c[i] = min
 	}
+	fmt.Println(c)
 	return c[n]
 }
 

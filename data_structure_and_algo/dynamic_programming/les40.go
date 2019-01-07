@@ -158,6 +158,43 @@ func bag4(maxWeight, totalElems, w, n int, elems, result []int) {
 	}
 }
 
+ /*
+ 升级版0-1背包问题：动态规划求解
+ 物品列表weight，对应价值value，背包总承重量maxWeight
+ 求在不超过背包总承重量的前提下，最大能装入背包的价值
+  */
+func bag5(maxWeight int, weight, value []int) {
+	if maxWeight == 0 || weight == nil || value == nil {
+		return
+	}
+	//定义状态数组, states[i][j]表示: 考察（装入/不装入）第i个物品且当前总重为j时，背包中容纳的总价值
+	states := make([][]int, len(weight)+1)
+	for i := 0; i < len(states); i++ {
+		s := make([]int, maxWeight+1)
+		states[i] = s
+	}
+	for i := 1; i <= len(weight); i++ {
+		for j := 0; j <= maxWeight; j++ {
+			if states[i-1][j] > 0 {
+				states[i][j] = states[i-1][j]
+			}
+		}
+		for j := 0; j <= maxWeight-weight[i]; j++ {
+			v := states[i-1][j] + value[i]
+			if states[i-1][j+weight[i]] < v {
+				states[i][j+weight[i]] = v
+			}
+		}
+	}
+	maxValue := -1
+	for k := 0; k <= maxWeight; k++ {
+		if v := states[len(weight)][k]; v > maxValue {
+			maxValue = v
+		}
+	}
+	fmt.Printf("max Value: %d\n", maxValue)
+}
+
 func main() {
 	//bag(weight, bagMax)
 	//bag2(weight, bagMax)
