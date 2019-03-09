@@ -13,7 +13,7 @@ var secret = []byte{'d','e','a','a'}
 func password(result []byte) {
 	if len(result) == 4 {
 		//pwds = append(pwds, result)
-		if  bytes.Equal(secret, result) {
+		if bytes.Equal(secret, result) {
 			fmt.Printf("find pwd: %s\n",result)
 		}
 		return
